@@ -14,3 +14,15 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+// 获取csrf的token值
+Route::get('getCsftToken',function () {
+    return csrf_token();
+});
+
+Route::group(['prefix' => 'todo'], function () {
+    Route::get('getTodoLists', 'Todo\IndexController@getTodoLists');
+    Route::get('getTodoItemDetails/{id}', 'Todo\IndexController@getTodoItemDetails');
+    Route::post('addTodoItem/{id?}', 'Todo\IndexController@addTodoItem');
+    Route::post('delete/{id}', 'Todo\IndexController@delete');
+});

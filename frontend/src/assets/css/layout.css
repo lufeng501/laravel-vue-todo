@@ -1,0 +1,14 @@
+.wrapper, .page {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+/*
+强制覆盖iview部分样式
+*/
+a.weui-btn:hover {
+    color: #FFFFFF !important;
+}
