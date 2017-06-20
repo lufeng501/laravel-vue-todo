@@ -1,6 +1,6 @@
 <template>
     <div id="wrapper">
-        <div class="page tabbar js_show">
+        <div class="page tabbar js_show" style="max-width: 650px;margin: auto">
             <div class="page__bd" style="height: 100%;">
                 <div class="weui-tab">
                     <div class="weui-tab__panel">

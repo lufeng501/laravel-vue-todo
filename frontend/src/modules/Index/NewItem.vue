@@ -6,7 +6,9 @@
     }
 </style>
 <template>
-    <div id="new-item" class="page__bd">
+    <div id="new-item" class="page" style="max-width: 650px;margin: auto">
+
+        <div class="page__bd" style="height: 100%;">
 
         <div class="weui-cells">
             <div class="weui-cell">
@@ -52,6 +54,8 @@
                     <span v-show="!submitting">保存</span>
                 </a>
             </div>
+        </div>
+
         </div>
 
     </div>
