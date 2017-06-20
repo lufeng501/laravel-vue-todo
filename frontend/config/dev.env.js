@@ -3,5 +3,5 @@ var prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  API_ROOT: '"http://todo.vps-lu.com/"'
+  API_ROOT: '"http://php7.todo.dev-lu.com"'
 })
