@@ -4,57 +4,78 @@
         width: 100%;
         bottom: 30px;
     }
+
+    .spin-icon-load {
+        animation: ani-spin 1s linear infinite;
+    }
+
+    @keyframes ani-spin {
+        from {
+            transform: rotate(0deg);
+        }
+        50% {
+            transform: rotate(180deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
 </style>
 <template>
     <div id="new-item" class="page" style="max-width: 650px;margin: auto">
 
         <div class="page__bd" style="height: 100%;">
 
-        <div class="weui-cells">
-            <div class="weui-cell">
-                <div class="weui-cell__bd">
-                    <input class="weui-input" v-model="title" type="text" placeholder="未命名清单"/>
+            <i-spin size="large" fix v-if="spinShow">
+                <i-icon type="load-c" size=24 class="spin-icon-load"></i-icon>
+                <div>Loading</div>
+            </i-spin>
+
+            <div class="weui-cells">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" v-model="title" type="text" placeholder="未命名清单"/>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="weui-cells weui-cells_checkbox">
-            <label v-for="(item,index) in lists" class="weui-cell weui-check__label" v-bind:for=" 's' + index ">
-                <div class="weui-cell__hd">
-                    <input type="checkbox" v-model="item.status" class="weui-check" name="checkbox"
-                           v-bind:id=" 's' + index ">
-                    <i class="weui-icon-checked"></i>
-                </div>
-                <div class="weui-cell__bd">
-                    <input class="weui-input" type="text" v-model="item.title" placeholder="请输入待办说明"/>
-                </div>
-            </label>
-            <a href="javascript:void(0);" v-on:click="add" class="weui-cell weui-cell_link">
-                <div class="weui-cell__bd">
-                    <i-icon type="plus"></i-icon>
-                    添加更多
-                </div>
-            </a>
-        </div>
-
-        <div class="btn-bottom-div weui-cells">
-            <div v-show="id" class="weui-btn-area">
-                <a class="weui-btn weui-btn_warn" v-bind:class="{ 'weui-btn_disabled' : del_submitting}"
-                   href="javascript:" v-on:click="del">
-                    <i v-show="del_submitting" class="weui-loading"></i>
-                    <span v-show="del_submitting">删除中...</span>
-                    <span v-show="!del_submitting">删除</span>
+            <div class="weui-cells weui-cells_checkbox">
+                <label v-for="(item,index) in lists" class="weui-cell weui-check__label" v-bind:for=" 's' + index ">
+                    <div class="weui-cell__hd">
+                        <input type="checkbox" v-model="item.status" class="weui-check" name="checkbox"
+                               v-bind:id=" 's' + index ">
+                        <i class="weui-icon-checked"></i>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" v-model="item.title" placeholder="请输入待办说明"/>
+                    </div>
+                </label>
+                <a href="javascript:void(0);" v-on:click="add" class="weui-cell weui-cell_link">
+                    <div class="weui-cell__bd">
+                        <i-icon type="plus"></i-icon>
+                        添加更多
+                    </div>
                 </a>
             </div>
-            <div class="weui-btn-area">
-                <a class="weui-btn weui-btn_primary" v-bind:class="{ 'weui-btn_disabled' : submitting}"
-                   href="javascript:" v-on:click="save">
-                    <i v-show="submitting" class="weui-loading"></i>
-                    <span v-show="submitting">保存中...</span>
-                    <span v-show="!submitting">保存</span>
-                </a>
+
+            <div class="btn-bottom-div weui-cells">
+                <div v-show="id" class="weui-btn-area">
+                    <a class="weui-btn weui-btn_warn" v-bind:class="{ 'weui-btn_disabled' : del_submitting}"
+                       href="javascript:" v-on:click="del">
+                        <i v-show="del_submitting" class="weui-loading"></i>
+                        <span v-show="del_submitting">删除中...</span>
+                        <span v-show="!del_submitting">删除</span>
+                    </a>
+                </div>
+                <div class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" v-bind:class="{ 'weui-btn_disabled' : submitting}"
+                       href="javascript:" v-on:click="save">
+                        <i v-show="submitting" class="weui-loading"></i>
+                        <span v-show="submitting">保存中...</span>
+                        <span v-show="!submitting">保存</span>
+                    </a>
+                </div>
             </div>
-        </div>
 
         </div>
 
@@ -72,6 +93,7 @@
     name: 'new-item',
     data() {
       return {
+        spinShow: false,
         submitting: false,
         del_submitting: false,
         id: 0,
@@ -81,6 +103,7 @@
     },
     created: function () {
       if (!funs.isNull(this.$route.params) && !funs.isNull(this.$route.params.id)) {
+        this.spinShow = true
         let id = this.$route.params.id
         this.id = id
         this.getTodoItemDetails(id)
@@ -164,9 +187,10 @@
               this.lists = jsonRes.data.related_details
               // 字符串转化数字
               var _this = this
-              $.each(_this.lists,function (index, item) {
+              $.each(_this.lists, function (index, item) {
                 _this.lists[index]['status'] = parseInt(item.status)
               })
+              this.spinShow = false
             } else {
               this.$Message.error(jsonRes.msg);
             }
@@ -180,6 +204,7 @@
     components: {
       'i-input': iView.Input,
       'i-icon': iView.Icon,
+      'i-spin' : iView.Spin
     }
   }
 </script>
